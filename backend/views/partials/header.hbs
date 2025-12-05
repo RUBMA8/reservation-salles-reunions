@@ -15,7 +15,7 @@
         {{/ifEquals}}
         
         <li><a href="/auth/logout" class="btn-logout">Déconnexion</a></li>
-        <li class="user-info">👤 {{user.prenom}} {{user.nom}}</li>
+        <li class="user-info">{{user.prenom}} {{user.nom}}</li>
       {{else}}
         <li><a href="/auth/login" class="btn-primary">Connexion</a></li>
         <li><a href="/auth/register" class="btn-secondary">Inscription</a></li>
