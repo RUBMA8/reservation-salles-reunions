@@ -1,0 +1,30 @@
+<div class="hero">
+  <h1>Bienvenue sur {{appName}}</h1>
+  <p>Réservez facilement vos salles de réunion</p>
+  
+  {{#if isAuthenticated}}
+    <a href="/dashboard" class="btn btn-large btn-primary">Accéder au tableau de bord</a>
+  {{else}}
+    <div class="hero-actions">
+      <a href="/auth/login" class="btn btn-large btn-primary">Se connecter</a>
+      <a href="/auth/register" class="btn btn-large btn-secondary">Créer un compte</a>
+    </div>
+  {{/if}}
+</div>
+
+<div class="features">
+  <div class="feature-card">
+    <h3>🔍 Consulter les salles</h3>
+    <p>Visualisez toutes les salles disponibles avec leurs équipements</p>
+  </div>
+  
+  <div class="feature-card">
+    <h3>📅 Réserver facilement</h3>
+    <p>Réservez une salle en quelques clics pour vos réunions</p>
+  </div>
+  
+  <div class="feature-card">
+    <h3>📊 Gérer vos réservations</h3>
+    <p>Consultez et annulez vos réservations à tout moment</p>
+  </div>
+</div>
