@@ -1,0 +1,73 @@
+<div class="admin-section">
+  <h1>Toutes les Réservations</h1>
+
+  <div class="reservations-list">
+    {{#each reservations}}
+      <div class="reservation-card">
+        <div class="reservation-header">
+          <h3>🏢 {{salle_nom}}</h3>
+          <p class="statut statut-{{statut}}">
+            {{#ifEquals statut 'active'}}
+              ✅ Active
+            {{/ifEquals}}
+            {{#ifEquals statut 'annulee'}}
+              ❌ Annulée
+            {{/ifEquals}}
+          </p>
+        </div>
+
+        <div class="reservation-details">
+          <p>👤 <strong>Utilisateur:</strong> {{user_prenom}} {{user_nom}} ({{user_email}})</p>
+          <p>📅 <strong>Début:</strong> {{formatDate date_debut}}</p>
+          <p>📅 <strong>Fin:</strong> {{formatDate date_fin}}</p>
+          {{#if motif}}
+            <p>📝 <strong>Motif:</strong> {{motif}}</p>
+          {{/if}}
+          <p>👥 <strong>Capacité salle:</strong> {{capacite}} personnes</p>
+          <p>📆 <strong>Créée le:</strong> {{formatDate created_at}}</p>
+        </div>
+
+        {{#ifEquals statut 'active'}}
+          <div class="card-actions">
+            <button onclick="cancelReservation({{id}})" class="btn btn-danger btn-sm">
+              ❌ Annuler cette réservation
+            </button>
+          </div>
+        {{/ifEquals}}
+      </div>
+    {{else}}
+      <div class="alert alert-info">
+        <p>Aucune réservation pour le moment.</p>
+      </div>
+    {{/each}}
+  </div>
+
+  <a href="/admin/dashboard" class="btn btn-secondary mt-20">← Retour au tableau de bord</a>
+</div>
+
+<script>
+async function cancelReservation(id) {
+  if (!confirm('Êtes-vous sûr de vouloir annuler cette réservation ?\n\nCette action est irréversible.')) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/reservations/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      alert('✅ Réservation annulée!');
+      window.location.reload();
+    } else {
+      const result = await response.json();
+      alert('❌ ' + result.error);
+    }
+  } catch (error) {
+    alert('❌ Erreur: ' + error.message);
+  }
+}
+</script>
