@@ -1,0 +1,93 @@
+<div class="user-section">
+  <h1>{{salle.nom}}</h1>
+  
+  <div class="salle-detail">
+    <div class="detail-info">
+      <h3>📋 Informations</h3>
+      <p><strong>Capacité:</strong> {{salle.capacite}} personnes</p>
+      <p><strong>Équipements:</strong> {{salle.equipements}}</p>
+      <p><strong>Description:</strong> {{salle.description}}</p>
+      <p class="disponibilite">
+        {{#if salle.disponible}}
+          ✅ Salle disponible
+        {{else}}
+          ❌ Salle indisponible
+        {{/if}}
+      </p>
+    </div>
+    
+    <div class="reservation-form">
+      <h3>📅 Réserver cette salle</h3>
+      
+      {{#if salle.disponible}}
+        <form id="reservationForm">
+          <input type="hidden" id="salleId" value="{{salle.id}}">
+          
+          <div class="form-group">
+            <label for="date_debut">Date et heure de début *</label>
+            <input type="datetime-local" id="date_debut" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="date_fin">Date et heure de fin *</label>
+            <input type="datetime-local" id="date_fin" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="motif">Motif</label>
+            <textarea id="motif" rows="3" placeholder="Ex: Réunion d'équipe, Présentation projet..."></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">✅ Réserver</button>
+        </form>
+      {{else}}
+        <div class="alert alert-warning">
+          Cette salle n'est pas disponible à la réservation pour le moment.
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  
+  <a href="/salles" class="btn btn-secondary mt-20">← Retour à la liste</a>
+</div>
+
+<script>
+document.getElementById('reservationForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const data = {
+    salle_id: parseInt(document.getElementById('salleId').value),
+    date_debut: document.getElementById('date_debut').value,
+    date_fin: document.getElementById('date_fin').value,
+    motif: document.getElementById('motif').value
+  };
+  
+  // Validation dates
+  if (new Date(data.date_fin) <= new Date(data.date_debut)) {
+    alert('❌ La date de fin doit être après la date de début');
+    return;
+  }
+  
+  try {
+    const response = await fetch('/reservations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok) {
+      alert('✅ Réservation créée avec succès!');
+      window.location.href = '/mes-reservations';
+    } else {
+      alert('❌ ' + result.error);
+    }
+  } catch (error) {
+    alert('❌ Erreur: ' + error.message);
+  }
+});
+</script>

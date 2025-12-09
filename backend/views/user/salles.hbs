@@ -1,0 +1,52 @@
+<div class="user-section">
+  <h1>Salles Disponibles</h1>
+  
+  <!-- Filtres -->
+  <div class="filters">
+    <input type="number" id="filterCapacite" placeholder="Capacité minimum" min="1">
+    <input type="text" id="filterEquipements" placeholder="Équipements (ex: Projecteur)">
+    <button onclick="applyFilters()" class="btn btn-primary">🔍 Filtrer</button>
+    <button onclick="resetFilters()" class="btn btn-secondary">↺ Réinitialiser</button>
+  </div>
+  
+  <div class="salles-grid" id="sallesGrid">
+    {{#each salles}}
+      <div class="salle-card" data-capacite="{{capacite}}" data-equipements="{{equipements}}">
+        <h3>{{nom}}</h3>
+        <p>👥 <strong>Capacité:</strong> {{capacite}} personnes</p>
+        <p>🔧 <strong>Équipements:</strong> {{equipements}}</p>
+        <p>{{description}}</p>
+        <div class="card-actions">
+          <a href="/salles/{{id}}" class="btn btn-primary">📅 Réserver</a>
+        </div>
+      </div>
+    {{else}}
+      <p>Aucune salle disponible pour le moment.</p>
+    {{/each}}
+  </div>
+</div>
+
+<script>
+function applyFilters() {
+  const capaciteMin = parseInt(document.getElementById('filterCapacite').value) || 0;
+  const equipements = document.getElementById('filterEquipements').value.toLowerCase();
+  
+  document.querySelectorAll('.salle-card').forEach(card => {
+    const capacite = parseInt(card.dataset.capacite);
+    const cardEquipements = card.dataset.equipements.toLowerCase();
+    
+    const matchCapacite = capacite >= capaciteMin;
+    const matchEquipements = !equipements || cardEquipements.includes(equipements);
+    
+    card.style.display = (matchCapacite && matchEquipements) ? 'block' : 'none';
+  });
+}
+
+function resetFilters() {
+  document.getElementById('filterCapacite').value = '';
+  document.getElementById('filterEquipements').value = '';
+  document.querySelectorAll('.salle-card').forEach(card => {
+    card.style.display = 'block';
+  });
+}
+</script>
