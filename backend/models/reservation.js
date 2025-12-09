@@ -58,11 +58,20 @@ class Reservation {
   }
   
   static cancel(id, userId, callback) {
-    db.run(
-      'UPDATE reservations SET statut = "annulee" WHERE id = ? AND user_id = ?',
-      [id, userId],
-      callback
-    );
+    if (userId) {
+      db.run(
+        'UPDATE reservations SET statut = "annulee" WHERE id = ? AND user_id = ?',
+        [id, userId],
+        callback
+      );
+    } else {
+      // Admin or no user filter: allow cancelling by id only
+      db.run(
+        'UPDATE reservations SET statut = "annulee" WHERE id = ?',
+        [id],
+        callback
+      );
+    }
   }
   
   static getAll(callback) {

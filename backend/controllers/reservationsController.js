@@ -74,8 +74,10 @@ exports.createReservation = (req, res) => {
 
 exports.cancelReservation = (req, res) => {
   const { id } = req.params;
-  
-  Reservation.cancel(id, req.user.id, function(err) {
+  // If the requester is admin, allow cancelling any reservation by passing null
+  const userIdFilter = req.user && req.user.role === 'admin' ? null : req.user.id;
+
+  Reservation.cancel(id, userIdFilter, function(err) {
     if (err) {
       return res.status(500).json({ error: 'Erreur lors de l\'annulation' });
     }
