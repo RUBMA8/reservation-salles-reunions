@@ -1,0 +1,64 @@
+<div class="admin-section">
+  <h1>➕ Ajouter une Salle</h1>
+  
+  <form id="addSalleForm" class="admin-form">
+    <div class="form-group">
+      <label for="nom">Nom de la salle *</label>
+      <input type="text" id="nom" name="nom" required placeholder="Ex: Salle A101">
+    </div>
+    
+    <div class="form-group">
+      <label for="capacite">Capacité (nombre de personnes) *</label>
+      <input type="number" id="capacite" name="capacite" required min="1" placeholder="Ex: 30">
+    </div>
+    
+    <div class="form-group">
+      <label for="equipements">Équipements</label>
+      <input type="text" id="equipements" name="equipements" placeholder="Ex: Projecteur, Tableau blanc, Climatisation">
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4" placeholder="Description de la salle..."></textarea>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">✅ Ajouter la salle</button>
+      <a href="/admin/salles" class="btn btn-secondary">❌ Annuler</a>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('addSalleForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const formData = {
+    nom: document.getElementById('nom').value,
+    capacite: parseInt(document.getElementById('capacite').value),
+    equipements: document.getElementById('equipements').value,
+    description: document.getElementById('description').value
+  };
+  
+  try {
+    const response = await fetch('/salles', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    if (response.ok) {
+      alert('✅ Salle ajoutée avec succès!');
+      window.location.href = '/admin/salles';
+    } else {
+      const data = await response.json();
+      alert('❌ Erreur: ' + data.error);
+    }
+  } catch (error) {
+    alert('❌ Erreur: ' + error.message);
+  }
+});
+</script>
