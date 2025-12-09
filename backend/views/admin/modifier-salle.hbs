@@ -1,0 +1,75 @@
+<div class="admin-section">
+  <h1>✏️ Modifier la Salle</h1>
+  
+  <form id="updateSalleForm" class="admin-form">
+    <input type="hidden" id="salleId" value="{{salle.id}}">
+    
+    <div class="form-group">
+      <label for="nom">Nom de la salle *</label>
+      <input type="text" id="nom" name="nom" required value="{{salle.nom}}">
+    </div>
+    
+    <div class="form-group">
+      <label for="capacite">Capacité (nombre de personnes) *</label>
+      <input type="number" id="capacite" name="capacite" required min="1" value="{{salle.capacite}}">
+    </div>
+    
+    <div class="form-group">
+      <label for="equipements">Équipements</label>
+      <input type="text" id="equipements" name="equipements" value="{{salle.equipements}}">
+    </div>
+    
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4">{{salle.description}}</textarea>
+    </div>
+    
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="disponible" name="disponible" {{#if salle.disponible}}checked{{/if}}>
+        Salle disponible à la réservation
+      </label>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">✅ Enregistrer les modifications</button>
+      <a href="/admin/salles" class="btn btn-secondary">❌ Annuler</a>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById('updateSalleForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const id = document.getElementById('salleId').value;
+  const formData = {
+    nom: document.getElementById('nom').value,
+    capacite: parseInt(document.getElementById('capacite').value),
+    equipements: document.getElementById('equipements').value,
+    description: document.getElementById('description').value,
+    disponible: document.getElementById('disponible').checked ? 1 : 0
+  };
+  
+  try {
+    const response = await fetch(`/salles/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    });
+    
+    if (response.ok) {
+      alert('✅ Salle modifiée avec succès!');
+      window.location.href = '/admin/salles';
+    } else {
+      const data = await response.json();
+      alert('❌ Erreur: ' + data.error);
+    }
+  } catch (error) {
+    alert('❌ Erreur: ' + error.message);
+  }
+});
+</script>
