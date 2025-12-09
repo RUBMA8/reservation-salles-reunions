@@ -1,0 +1,64 @@
+<div class="user-section">
+  <h1>Mes Réservations</h1>
+
+  <div class="reservations-list">
+    {{#each reservations}}
+    <div class="reservation-card">
+      <p class="statut statut-{{statut}}">
+        {{#ifEquals statut 'active'}}
+         Active
+        {{/ifEquals}}
+        {{#ifEquals statut 'annulee'}}
+        Annulée
+        {{/ifEquals}}
+      </p>
+      <h3>🏢 {{salle_nom}}</h3>
+      <p>📅 <strong>Début:</strong> {{formatDate date_debut}}</p>
+      <p>📅 <strong>Fin:</strong> {{formatDate date_fin}}</p>
+      {{#if motif}}
+      <p><strong>Motif:</strong> {{motif}}</p>
+      {{/if}}
+      <p>👥 <strong>Capacité:</strong> {{capacite}} personnes</p>
+
+
+      {{#ifEquals statut 'active'}}
+      <button onclick="cancelReservation({{id}})" class="btn btn-danger btn-sm mt-20">
+        Annuler 
+      </button>
+      {{/ifEquals}}
+    </div>
+    {{else}}
+    <div class="alert alert-warning">
+      <p>Vous n'avez pas encore de réservation.</p>
+      <a href="/salles" class="btn btn-primary mt-20">📅 Réserver une salle</a>
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<script>
+  async function cancelReservation(id) {
+    if (!confirm('Êtes-vous sûr de vouloir annuler cette réservation ?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/reservations/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        alert('✅ Réservation annulée!');
+        window.location.reload();
+      } else {
+        const result = await response.json();
+        alert('❌ ' + result.error);
+      }
+    } catch (error) {
+      alert('❌ Erreur: ' + error.message);
+    }
+  }
+</script>

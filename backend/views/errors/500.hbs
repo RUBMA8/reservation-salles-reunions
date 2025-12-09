@@ -1,0 +1,13 @@
+<div class="error-page">
+  <h1>500</h1>
+  <h2>Erreur serveur</h2>
+  <p>Une erreur s'est produite. Veuillez réessayer plus tard.</p>
+  <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+  
+  {{#if error}}
+    <details>
+      <summary>Détails de l'erreur (développement)</summary>
+      <pre>{{error.stack}}</pre>
+    </details>
+  {{/if}}
+</div>

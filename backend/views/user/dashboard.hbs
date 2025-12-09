@@ -1,0 +1,27 @@
+<div class="dashboard">
+  <h1>Bienvenue, {{user.prenom}} !</h1>
+  
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>📅 Mes réservations actives</h3>
+      <p class="stat-number">{{stats.mesReservations}}</p>
+      <a href="/mes-reservations" class="btn btn-secondary">Voir mes réservations</a>
+    </div>
+
+    <div class="stat-card">
+      <h3>🏢 Salles disponibles</h3>
+      <p class="stat-number">{{stats.sallesDisponibles}}</p>
+      <a href="/salles" class="btn btn-primary">Réserver une salle</a>
+    </div>
+  </div>
+  
+  <div class="quick-actions">
+    <h2>Actions rapides</h2>
+    <a href="/salles" class="action-btn">
+      Consulter les salles
+    </a>
+    <a href="/mes-reservations" class="action-btn">
+      Mes réservations
+    </a>
+  </div>
+</div>
