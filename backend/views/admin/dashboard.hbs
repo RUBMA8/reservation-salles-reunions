@@ -1,0 +1,30 @@
+<div class="dashboard admin-dashboard">
+  <h1>Administration</h1>
+  
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <h3>🏢 Total salles</h3>
+      <p class="stat-number">{{stats.totalSalles}}</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>📅 Réservations actives</h3>
+      <p class="stat-number">{{stats.reservationsActives}}</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>👥 Utilisateurs</h3>
+      <p class="stat-number">{{stats.totalUsers}}</p>
+    </div>
+  </div>
+  
+  <div class="admin-actions">
+    <h2>Gestion</h2>
+    <a href="/admin/salles" class="action-btn admin-btn">
+      Gérer les salles
+    </a>
+    <a href="/admin/reservations" class="action-btn admin-btn">
+      Voir toutes les réservations
+    </a>
+  </div>
+</div>

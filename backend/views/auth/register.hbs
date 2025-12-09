@@ -1,0 +1,82 @@
+<div class="auth-container">
+  <div class="auth-box">
+    <h1>Inscription</h1>
+    
+    {{#if error}}
+      <div class="alert alert-error">
+        ❌ {{error}}
+      </div>
+    {{/if}}
+    
+    <form action="/auth/register" method="POST" class="auth-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="prenom">Prénom</label>
+          <input 
+            type="text" 
+            id="prenom" 
+            name="prenom" 
+            required
+            value="{{prenom}}"
+            placeholder="Ruben"
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input 
+            type="text" 
+            id="nom" 
+            name="nom" 
+            required
+            value="{{nom}}"
+            placeholder="Bouakaly"
+          >
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required
+          value="{{email}}"
+          placeholder="exemple@lacite.ca"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required
+          placeholder="Minimum 6 caractères"
+          minlength="6"
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          name="confirmPassword" 
+          required
+          placeholder="Retapez votre mot de passe"
+        >
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">
+        S'inscrire
+      </button>
+    </form>
+    
+    <p class="auth-footer">
+      Déjà un compte ? <a href="/auth/login">Se connecter</a>
+    </p>
+  </div>
+</div>

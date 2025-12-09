@@ -1,0 +1,58 @@
+<div class="admin-section">
+  <div class="section-header">
+    <h1>Gestion des Salles</h1>
+    <a href="/admin/salles/ajouter" class="btn btn-primary">➕ Ajouter une salle</a>
+  </div>
+  
+  <div class="salles-grid">
+    {{#each salles}}
+      <div class="salle-card">
+        <h3>{{nom}}</h3>
+        <p>👥 <strong>Capacité:</strong> {{capacite}} personnes</p>
+        <p>🔧 <strong>Équipements:</strong> {{equipements}}</p>
+        <p>{{description}}</p>
+        <p class="disponibilite">
+          {{#if disponible}}
+            ✅ Disponible
+          {{else}}
+            ❌ Indisponible
+          {{/if}}
+        </p>
+        
+        <div class="card-actions">
+          <a href="/admin/salles/modifier/{{id}}" class="btn btn-secondary btn-sm">✏️ Modifier</a>
+          <button onclick="deleteSalle({{id}})" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+        </div>
+      </div>
+    {{else}}
+      <p>Aucune salle pour le moment.</p>
+    {{/each}}
+  </div>
+</div>
+
+<script>
+async function deleteSalle(id) {
+  if (!confirm('Êtes-vous sûr de vouloir supprimer cette salle ?\n\nToutes les réservations associées seront également supprimées.')) {
+    return;
+  }
+  
+  try {
+    const response = await fetch(`/salles/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (response.ok) {
+      alert('✅ Salle supprimée!');
+      window.location.reload();
+    } else {
+      const result = await response.json();
+      alert('❌ ' + result.error);
+    }
+  } catch (error) {
+    alert('❌ Erreur: ' + error.message);
+  }
+}
+</script>
